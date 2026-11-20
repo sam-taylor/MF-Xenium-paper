@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Probe-positive and clone-zone fractions of haematopoietic cells per section beside the clinical JAK2 V617F VAF (ED6a).
-Input: cohort object; clinical VAFs and groups of Fig. 2f (analysis/xenium_vs_clinical_vaf_correlation.py), replaced by the
+Input: cohort object; clinical VAFs and groups of Fig. 2f (analysis/mutants/xenium_vs_clinical_vaf_correlation.py), replaced by the
 VAF measured on the FFPE biopsy itself where the cohort object has one (jak2_v617f_vaf_ffpe).
 Output: <work>/results/imputation/burden_vs_clinical_vaf.csv, burden_vs_clinical_vaf_summary.csv"""
 import ast
@@ -13,7 +13,7 @@ OUT = paths.results("imputation")
 NON_HEM_T1 = {"Stromal", "Endothelial"}
 ACTIVE = ["MFUT", "Pre-Tx", "Relapse"]
 
-src = ast.parse((paths.ROOT / "analysis/xenium_vs_clinical_vaf_correlation.py").read_text())
+src = ast.parse((paths.ROOT / "analysis/mutants/xenium_vs_clinical_vaf_correlation.py").read_text())
 rows = [r for node in src.body if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") in ("DATA", "DATA_MF8")
         for r in ast.literal_eval(node.value)]
 clin = pd.DataFrame(rows, columns=["sample_id", "xenium_vaf", "clinical_vaf", "group"]).set_index("sample_id")

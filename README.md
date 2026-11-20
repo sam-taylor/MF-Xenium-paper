@@ -21,7 +21,7 @@ stored in the cohort object.
 | Panel | Table(s) in `<work>/results/` | Script |
 |---|---|---|
 | 1f | chimerism/y_bias_per_section.csv | analysis/chimerism/chimerism_tables.py |
-| 2f, ED2h, ED2i | vaf/ (per-section Xenium and clinical VAFs are listed in the script) | analysis/xenium_vs_clinical_vaf_correlation.py |
+| 2f, ED2h, ED2i | vaf/ (per-section Xenium and clinical VAFs are listed in the script) | analysis/mutants/xenium_vs_clinical_vaf_correlation.py |
 | ED2d, ED2e | chimerism/residual_host_by_type.csv, mesenchymal_host_donor_by_patient.csv | analysis/chimerism/chimerism_tables.py |
 | 3c, 3d, 3e | mutants/mutant_density.csv | analysis/mutants/mutant_density.py |
 | 3g | deg/cell_level_wilcoxon.csv | analysis/deg/cell_level_wilcoxon.py |
@@ -50,7 +50,7 @@ Numbers quoted in the Methods:
 | negative-control share of retained calls at QV ≥ 15 | qc/negative_control_fraction.csv | analysis/qc/negative_control_fraction.py |
 | variance of the 200 principal components; transcripts per Indeterminate and resolved cell | celltyping/pca_variance.csv, transcripts_by_status.csv | analysis/celltyping/annotation_stats.py |
 | clone-zone neighbourhood size (50-200 neighbours) and distance to the 100th neighbour | imputation/neighbourhood_size.csv, neighbourhood_distance.csv | analysis/imputation/neighbourhood_size.py |
-| Fig. 2f regression and patient mixed model | vaf/fig2f_regression.csv | analysis/xenium_vs_clinical_vaf_correlation.py |
+| Fig. 2f regression and patient mixed model | vaf/fig2f_regression.csv | analysis/mutants/xenium_vs_clinical_vaf_correlation.py |
 
 Panels that show or tabulate columns of the cohort object directly need no code: 3a, 3b (`obsm["X_umap"]`, `["X_umap_tnk"]`,
 `ct_*_final`), 3f (cell-type and chimerism columns by section), 4c, 4g (`obsm["spatial"]`, niche columns), 5c (probe and clone-zone
