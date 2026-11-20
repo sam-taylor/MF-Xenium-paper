@@ -2,21 +2,20 @@
 
 Code that builds the cohort AnnData object and computes the data behind the figure panels and reported statistics.
 
-## Layout
+## Repository structure
 
 ```
 config/paths.yaml   data locations (copy to config/paths.local.yaml)
-src/mfx/            shared code: paths, cohort object access, cell-type taxonomy, niche groups
+src/mfx/            shared code: paths, cohort object access, cell-type taxonomy, niche groups, clone-zone rule
 pipeline/           builds the cohort object (steps 01-06, see pipeline/README.md)
 analysis/           one script per analysis; results are written to <work>/results/<topic>/
 slurm/run.sbatch    batch wrapper
+environment.yml     Python environment and software versions
 ```
 
-Setup: `conda env create -f environment.yml`, set the paths in `config/paths.local.yaml`, run `pipeline/` in step order, then
-`analysis/`. Seeds are fixed. Proseg and the embedding and clustering (`pipeline/03_annotation`) are stochastic, and their results are
-stored in the cohort object.
+## Contents
 
-## Source data
+### Figure panels
 
 | Panel | Table(s) in `<work>/results/` | Script |
 |---|---|---|
@@ -43,7 +42,7 @@ stored in the cohort object.
 | ED8a, ED8b | proximity/nk/ | analysis/proximity/nk_proximity.py |
 | ED9 | checkpoint/ | analysis/checkpoint/checkpoint_burden.py |
 
-Numbers quoted in the Methods:
+### Numbers quoted in the Methods
 
 | Statement | Table(s) in `<work>/results/` | Script |
 |---|---|---|
@@ -52,7 +51,63 @@ Numbers quoted in the Methods:
 | clone-zone neighborhood size (50-200 neighbors) and distance to the 100th neighbor | imputation/neighborhood_size.csv, neighborhood_distance.csv | analysis/imputation/neighborhood_size.py |
 | Fig. 2f regression and patient mixed model | vaf/fig2f_regression.csv | analysis/mutants/xenium_vs_clinical_vaf_correlation.py |
 
+### Panels without code
+
 Panels that show or tabulate columns of the cohort object directly need no code: 3a, 3b (`obsm["X_umap"]`, `["X_umap_tnk"]`,
 `ct_*_final`), 3f (cell-type and chimerism columns by section), 4c, 4g (`obsm["spatial"]`, niche columns), 5c (probe and clone-zone
 columns), ED1a (section table), ED3a (lineage counts per section), ED3b, ED3c (`obsm["protein_mfi"]`), ED4a, ED4b (marker expression
 by cell type), ED5b-d, ED5f (neighbor counts of one cell, niche groups of one section), Supplementary Table 5 (cells per section).
+
+
+## Installation
+
+```bash
+conda env create -f environment.yml    # Python 3.14 environment; installs src/mfx as the package `mfx`
+conda activate mfx
+```
+
+`analysis/niches/niche_composition_dm.R` additionally needs R with brms 2.23, rstan 2.32, posterior 1.7 and data.table.
+
+## Quickstart
+
+1. Copy `config/paths.yaml` to `config/paths.local.yaml` and set the locations: `work` (intermediates and results),
+   `cohort_object` (the cohort AnnData, zarr), and for the pipeline `sections_csv` and `protein_dir`. `MFX_CONFIG` can point to a
+   config file elsewhere.
+2. Run a script, for example the pseudobulk differential expression of Fig. 5d, 5e:
+
+   ```bash
+   python analysis/deg/pseudobulk_deg.py --design global_pooled
+   ```
+
+   Tables are written to `<work>/results/<topic>/`, the folders named in the tables above.
+3. On a Slurm cluster: `sbatch slurm/run.sbatch analysis/deg/pseudobulk_deg.py --design global_pooled`. Per-section pipeline steps
+   run as arrays (`pipeline/README.md`).
+
+Scripts read the cohort object and change it only when run with `--write-object`.
+
+## Data
+
+The analysis scripts start from the cohort object, one AnnData (zarr) holding the cells of all sections with counts, cell-type
+labels, probe calls, chimerism calls, the spatial graph and niche labels. Its availability is given in the Data availability
+statement of the paper. `pipeline/` rebuilds it from the Xenium output of each section (Proseg segmentation inputs, transcript
+tables and morphology images), listed per section in `sections_csv`.
+
+## Things to know before running
+
+- **Run order.** The pipeline steps run in numerical order. Some analyses read tables written by an earlier script:
+  `pipeline/06_spatial/niche_fit.py` before `analysis/niches/niche_umap.py` and `niche_umap_project.py`;
+  `niche_group_counts.py` before `niche_composition_dm.R`; the per-section recounts of `pipeline/02_counts_qv` before
+  `analysis/qc/negative_control_fraction.py`.
+- **Panels are drawn from the tables.** The scripts compute the values shown in each panel and write them as tables; the plotting
+  code is not part of this repository, except for Fig. 2f, ED2h and ED2i, which the VAF script also draws.
+- **Source data in a script.** The per-section Xenium and clinical VAFs of Fig. 2f, ED2h and ED2i are entered in
+  `analysis/mutants/xenium_vs_clinical_vaf_correlation.py` (they are listed in Supplementary Table 1), and `analysis/imputation/burden_vs_clinical_vaf.py`
+  reads the clinical VAFs from that script.
+- **Stochastic steps.** Seeds are fixed. Proseg and the embedding and clustering (`pipeline/03_annotation`) are stochastic, and their
+  results are stored in the cohort object rather than recomputed.
+- **Resources.** The full-cohort scripts were run with 8 CPUs and up to 250 GB of memory (`slurm/run.sbatch`; adjust the partition
+  and resources to your site).
+
+## License
+
+MIT, see [`LICENSE`](LICENSE).
