@@ -1,5 +1,5 @@
-"""Clone-zone rule shared by the pipeline step (pipeline/04_mutations/clone_zone_imputation.py) and the neighbourhood-size
-comparison (analysis/imputation/neighbourhood_size.py)."""
+"""Clone-zone rule shared by the pipeline step (pipeline/04_mutations/clone_zone_imputation.py) and the neighborhood-size
+comparison (analysis/imputation/neighborhood_size.py)."""
 import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
@@ -39,9 +39,9 @@ def background(obs: pd.DataFrame) -> tuple[pd.DataFrame, float]:
     return bg, global_bg
 
 
-def neighbour_counts(obs: pd.DataFrame, k: int = K, return_kth_distance: bool = False):
+def neighbor_counts(obs: pd.DataFrame, k: int = K, return_kth_distance: bool = False):
     """For each cell, the number of its k nearest same-section cells of its own tier-2 type, and how many of those are
-    probe-positive; optionally the distance to its k-th neighbour (NaN in sections with <= k cells)."""
+    probe-positive; optionally the distance to its k-th neighbor (NaN in sections with <= k cells)."""
     n = len(obs)
     same_count = np.zeros(n, dtype=np.uint16)
     probe_count = np.zeros(n, dtype=np.uint16)

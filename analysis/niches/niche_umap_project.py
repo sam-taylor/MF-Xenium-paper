@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Project the other cells of the JAK2 sections onto the niche UMAP (Fig. 4e) with sc.tl.ingest.
 
-Reference: the 200,000 fitted cells (analysis/niches/niche_umap.py) and the neighbour graph of their CLR vectors;
-query: every other cell with >= 10 neighbours in a section of a JAK2-mutant patient.
+Reference: the 200,000 fitted cells (analysis/niches/niche_umap.py) and the neighbor graph of their CLR vectors;
+query: every other cell with >= 10 neighbors in a section of a JAK2-mutant patient.
 
 Input:  <work>/results/niches/{nhood_composition_clr,imputed,umap_subsample}.npy
 Output: <work>/results/niches/umap_projected_jak2.npy (fitted cells as fitted, query cells projected, NaN elsewhere)

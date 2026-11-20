@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fig. 3g: JAK2 mutant (probe-positive) vs wild-type cells, Wilcoxon rank-sum on the log-normalised matrix, pooled over cell
+"""Fig. 3g: JAK2 mutant (probe-positive) vs wild-type cells, Wilcoxon rank-sum on the log-normalized matrix, pooled over cell
 types, in patients with >= 50 mutant cells at any timepoint.
 Input: cohort object. Output: <work>/results/deg/cell_level_wilcoxon.csv"""
 import anndata as ad

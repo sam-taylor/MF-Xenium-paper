@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UMAP of neighbourhood composition (Fig. 4a, 4e): 200,000 cells with >= 10 neighbours, 150-nearest-neighbour graph on
+"""UMAP of neighborhood composition (Fig. 4a, 4e): 200,000 cells with >= 10 neighbors, 150-nearest-neighbor graph on
 the CLR vectors, PAGA over the niche groups as the initial layout.
 
 Input:  <work>/results/niches/{nhood_composition_clr,imputed}.npy, obs niche group

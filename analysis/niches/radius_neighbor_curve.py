@@ -1,4 +1,4 @@
-"""ED5a: neighbours per cell at a range of radii (choice of the 50 um niche radius).
+"""ED5a: neighbors per cell at a range of radii (choice of the 50 um niche radius).
 
 Input:  cohort object (obsm spatial, obs sample_id); radius graph is built per section
 Output: <work>/results/niches/radius_neighbor_curve.csv

@@ -67,7 +67,7 @@ def disease_active_sections() -> pd.DataFrame:
     return s[s.is_jak2_patient & active & (s.group != "CTMS")].reset_index(drop=True)
 
 
-# ── writing results into the cohort object (pipeline steps) ──
+# Writing results into the cohort object (pipeline steps)
 def write_obs_columns(columns: dict) -> None:
     """Add or replace obs columns of the cohort object (dict name -> array/Series/Categorical)."""
     import anndata as ad

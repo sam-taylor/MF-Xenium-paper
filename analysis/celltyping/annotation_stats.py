@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Numbers quoted in the Methods (Xenium Cell Typing): variance explained by the leading principal components of the 465
-log-normalised features, and gene-expression transcripts per cell of Indeterminate, T/NK mixed and resolved cells.
+log-normalized features, and gene-expression transcripts per cell of Indeterminate, T/NK mixed and resolved cells.
 Input: cohort object (X, obs). Output: <work>/results/celltyping/{pca_variance,transcripts_by_status}.csv"""
 import numpy as np
 import pandas as pd

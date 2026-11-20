@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fig. 5h: proximity enrichment score of every gene along the distance to the nearest JAK2-mutant cell, per section
-(signed peak of the normalised running sum), tested across sections with a Wilcoxon signed-rank test (BH).
+(signed peak of the normalized running sum), tested across sections with a Wilcoxon signed-rank test (BH).
 Median and interquartile range across sections of the running sum of GZMB, GNLY and PRF1 are written as effector_curves.csv.
 Input: cohort object. Output: <work>/results/proximity/es/{es_per_section.csv, es_gene_table.csv, effector_curves.csv}"""
 import numpy as np
@@ -22,7 +22,7 @@ OUT = paths.results("proximity/es")
 
 
 def running_sum(expr_ranked):
-    """Normalised running sum of every column of a (cells x genes) matrix sorted by distance (row 0 = closest)."""
+    """Normalized running sum of every column of a (cells x genes) matrix sorted by distance (row 0 = closest)."""
     total = expr_ranked.sum(axis=0)
     rs = np.cumsum((expr_ranked - total / expr_ranked.shape[0]).astype(np.float64), axis=0)
     with np.errstate(invalid="ignore", divide="ignore"):
@@ -76,7 +76,7 @@ for gene, d in per.groupby("gene"):
 tab = pd.DataFrame(rows_out)
 tab["fdr"] = multipletests(tab.wilcoxon_p, method="fdr_bh")[1]
 tab.sort_values("wilcoxon_p").to_csv(OUT / "es_gene_table.csv", index=False)
-curve_tab = {"distance_um": DIST_CENTERS, "neighbour_density": np.mean(density, 0)}
+curve_tab = {"distance_um": DIST_CENTERS, "neighbor_density": np.mean(density, 0)}
 for g, c in curves.items():
     c = np.array(c)
     curve_tab |= {f"{g}_median": np.nanmedian(c, 0), f"{g}_q1": np.nanpercentile(c, 25, 0), f"{g}_q3": np.nanpercentile(c, 75, 0)}

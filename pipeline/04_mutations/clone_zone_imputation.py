@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Clone zone: JAK2 V617F probe-positive cells plus eligible neighbours whose 100 nearest same-section cells are enriched for
+"""Clone zone: JAK2 V617F probe-positive cells plus eligible neighbors whose 100 nearest same-section cells are enriched for
 same-type probe-positive cells (>= 3x the type's background rate in non-JAK2 sections).
 Input: cohort object. Output: <work>/results/clone_zone/; with --write-object the obs columns of the cohort object."""
 import argparse
@@ -21,7 +21,7 @@ obs = cz.load_cells()
 bg, global_bg = cz.background(obs)
 bg.to_csv(OUT / "background_by_type.csv", index=False)
 obs["bg_rate"] = obs.ct2.map(dict(zip(bg.ct2, bg.bg_rate_used))).fillna(global_bg)
-same_count, probe_count = cz.neighbour_counts(obs)
+same_count, probe_count = cz.neighbor_counts(obs)
 label, score, eligible = cz.clone_zone(obs, obs.bg_rate.to_numpy(float), same_count, probe_count)
 probe = obs.is_probe.to_numpy()
 np.save(OUT / "label.npy", label)

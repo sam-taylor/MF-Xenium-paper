@@ -1,4 +1,4 @@
-"""Stack the section recounts into the cohort count matrices (raw, layers['counts'], normalised X)."""
+"""Stack the section recounts into the cohort count matrices (raw, layers['counts'], normalized X)."""
 import anndata as ad
 import pandas as pd
 import scanpy as sc

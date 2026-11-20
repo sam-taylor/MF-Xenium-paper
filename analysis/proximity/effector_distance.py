@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fig. 5g: composite GZMB/GNLY/PRF1 score of T and NK cells against distance to the nearest JAK2-mutant cell;
-running mean and 90th percentile over distance-sorted cells, per-section distance-bin fold changes (summarised per bin)
+running mean and 90th percentile over distance-sorted cells, per-section distance-bin fold changes (summarized per bin)
 and a 0-50 vs 200-500 um Wilcoxon signed-rank test.
 Input: cohort object. Output: <work>/results/proximity/effector_distance/"""
 import numpy as np
@@ -16,7 +16,7 @@ IMMUNE = ["T_Cell_CD8_Memory", "T_Cell_CD8_Naive", "T_Cell_CD4_Memory", "T_Cell_
           "T_Cell_Prolif", "T_Cell_ISG", "NK_Cell_GNLY_CD56bright", "NK_Cell_GNLY_CD56dim"]
 EFFECTORS = ["GZMB", "GNLY", "PRF1"]
 BINS = [0, 25, 50, 75, 100, 150, 200, 300, 500]
-CENTRES = [(BINS[i] + BINS[i + 1]) / 2 for i in range(len(BINS) - 1)]
+CENTERS = [(BINS[i] + BINS[i + 1]) / 2 for i in range(len(BINS) - 1)]
 EPS = 1e-4
 WINDOW = 1500  # cells per running window
 OUT = paths.results("proximity/effector_distance")
@@ -51,9 +51,9 @@ sb = sb[sb.n >= 5]
 base = sb[sb["bin"].isin([6, 7])].groupby("sample_id")["score"].mean()
 sb["lfc"] = np.log2((sb.score + EPS) / (sb.sample_id.map(base) + EPS))
 sb = sb.dropna(subset=["lfc"])
-sb["centre"] = sb["bin"].map(dict(enumerate(CENTRES)))
+sb["center"] = sb["bin"].map(dict(enumerate(CENTERS)))
 sb.to_csv(OUT / "section_bins.csv", index=False)
-sb.groupby("centre")["lfc"].agg(["mean", "sem"]).to_csv(OUT / "bin_summary.csv")
+sb.groupby("center")["lfc"].agg(["mean", "sem"]).to_csv(OUT / "bin_summary.csv")
 
 cells = cells.sort_values("d").reset_index(drop=True)
 roll = cells["score"].rolling(WINDOW, center=True, min_periods=WINDOW // 2)
@@ -65,7 +65,7 @@ dist = dist[dist["size"] >= 5]["mean"]
 common = prox.index.intersection(dist.index)
 lfc = np.log2((prox[common] + EPS) / (dist[common] + EPS))
 w = wilcoxon(lfc)
-rho, rp = spearmanr(sb.centre, sb.lfc)
+rho, rp = spearmanr(sb.center, sb.lfc)
 stats = pd.DataFrame([{"n_sections": len(common), "median_lfc_0_50_vs_200_500": lfc.median(),
                        "n_sections_lower": int((lfc < 0).sum()), "wilcoxon_p": w.pvalue, "spearman_rho_section_bins": rho,
                        "spearman_p": rp, "n_cells": len(cells), "frac_cells_score0": float((cells.score == 0).mean())}])

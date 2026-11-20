@@ -49,10 +49,10 @@ Numbers quoted in the Methods:
 |---|---|---|
 | negative-control share of retained calls at QV ≥ 15 | qc/negative_control_fraction.csv | analysis/qc/negative_control_fraction.py |
 | variance of the 200 principal components; transcripts per Indeterminate and resolved cell | celltyping/pca_variance.csv, transcripts_by_status.csv | analysis/celltyping/annotation_stats.py |
-| clone-zone neighbourhood size (50-200 neighbours) and distance to the 100th neighbour | imputation/neighbourhood_size.csv, neighbourhood_distance.csv | analysis/imputation/neighbourhood_size.py |
+| clone-zone neighborhood size (50-200 neighbors) and distance to the 100th neighbor | imputation/neighborhood_size.csv, neighborhood_distance.csv | analysis/imputation/neighborhood_size.py |
 | Fig. 2f regression and patient mixed model | vaf/fig2f_regression.csv | analysis/mutants/xenium_vs_clinical_vaf_correlation.py |
 
 Panels that show or tabulate columns of the cohort object directly need no code: 3a, 3b (`obsm["X_umap"]`, `["X_umap_tnk"]`,
 `ct_*_final`), 3f (cell-type and chimerism columns by section), 4c, 4g (`obsm["spatial"]`, niche columns), 5c (probe and clone-zone
 columns), ED1a (section table), ED3a (lineage counts per section), ED3b, ED3c (`obsm["protein_mfi"]`), ED4a, ED4b (marker expression
-by cell type), ED5b-d, ED5f (neighbour counts of one cell, niche groups of one section), Supplementary Table 5 (cells per section).
+by cell type), ED5b-d, ED5f (neighbor counts of one cell, niche groups of one section), Supplementary Table 5 (cells per section).

@@ -13,7 +13,7 @@ from mfx import cohort, paths
 GROUPS = ["MFUT", "Pre-Tx", "Relapse"]
 BRIGHT, DIM = "NK_Cell_GNLY_CD56bright", "NK_Cell_GNLY_CD56dim"
 MIN_MUT, MIN_TYPE, MIN_TYPE_KDE = 20, 10, 3
-RADIUS = 50  # um, the neighbourhood radius used throughout
+RADIUS = 50  # um, the neighborhood radius used throughout
 OUT = paths.results("proximity/nk")
 
 obs = cohort.read_obs(["sample_id", "patient_id", "ct_tier3_final"])

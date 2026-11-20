@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Neighbours within 50 µm and share of Indeterminate cells in each niche and niche group (ED5e, right).
+"""Neighbors within 50 µm and share of Indeterminate cells in each niche and niche group (ED5e, right).
 
 Input:  cohort object (obs niche, niche group, nhood_n_neighbors_radius50, ct_tier3_final)
 Output: <work>/results/niches/niche_neighbor_density.csv (rows: the 20 niches, the 8 groups and the cohort)

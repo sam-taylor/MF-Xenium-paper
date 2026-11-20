@@ -29,7 +29,7 @@ for s in np.unique(sid):
 r, c, dd = np.concatenate(rows), np.concatenate(cols), np.concatenate(dist)
 distances = sp.csr_matrix((dd.astype(np.float32), (r, c)), shape=(n, n))
 connectivities = sp.csr_matrix((np.ones(len(r), dtype=np.float32), (r, c)), shape=(n, n))
-print(f"{connectivities.nnz:,} edges; mean {connectivities.nnz / n:.1f} neighbours per cell")
+print(f"{connectivities.nnz:,} edges; mean {connectivities.nnz / n:.1f} neighbors per cell")
 
 if args.write_object:
     cohort.write_obsp("spatial_connectivities", connectivities)
@@ -43,5 +43,5 @@ else:
     out = paths.results("niches")
     with open(out / "radius_graph_check.txt", "w") as f:
         f.write(f"edges built {connectivities.nnz} stored {stored.nnz} differing {same.nnz}\n"
-                f"cells with a different neighbour count {int((deg_new != deg_old).sum())}\n")
+                f"cells with a different neighbor count {int((deg_new != deg_old).sum())}\n")
     print(open(out / "radius_graph_check.txt").read())

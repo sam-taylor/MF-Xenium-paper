@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Spatial niches: CLR composition of the 50 um neighbourhood over the 31 tier-3 labels, k-means (k = 20) on cells
-with >= 10 neighbours (the others take the majority niche of their 15 nearest fitted cells), Ward grouping into 8 groups.
+"""Spatial niches: CLR composition of the 50 um neighborhood over the 31 tier-3 labels, k-means (k = 20) on cells
+with >= 10 neighbors (the others take the majority niche of their 15 nearest fitted cells), Ward grouping into 8 groups.
 
 Input:  cohort object (obsp spatial_connectivities, obs ct_tier3_final)
 Output: <work>/results/niches/{nhood_composition_clr,nhood_neighbor_counts,labels_k20,imputed}.npy, k20_ward_linkage.csv
@@ -43,7 +43,7 @@ clr = (logc - logc.mean(1, keepdims=True)).astype(np.float32)
 np.save(OUT / "nhood_composition_clr.npy", clr)
 np.save(OUT / "nhood_neighbor_counts.npy", n_nb.astype(np.int32))
 valid = n_nb >= MIN_NEIGHBORS
-print(f"{valid.sum():,} fitted cells, {(~valid).sum():,} edge cells; median neighbours {np.median(n_nb):.0f}", flush=True)
+print(f"{valid.sum():,} fitted cells, {(~valid).sum():,} edge cells; median neighbors {np.median(n_nb):.0f}", flush=True)
 
 fitted = clr[valid]
 lab_v = MiniBatchKMeans(n_clusters=K, random_state=SEED, batch_size=10_000, n_init=10, max_iter=300).fit_predict(fitted)

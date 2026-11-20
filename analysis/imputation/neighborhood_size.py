@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Choice of the clone-zone neighbourhood size (Methods, Clone-Zone Imputation).
+"""Choice of the clone-zone neighborhood size (Methods, Clone-Zone Imputation).
 
-For K = 50, 100, 150 and 200 nearest neighbours, the clone-zone rule is applied unchanged and scored against the sex-based
+For K = 50, 100, 150 and 200 nearest neighbors, the clone-zone rule is applied unchanged and scored against the sex-based
 host and donor calls of resolved cells in post-transplant sections of JAK2 V617F patients (host-derived non-lymphoid
-hematopoietic cells belong to the clone, donor-derived cells do not). Also reports the distance to the 100th neighbour and the
-local probe-positive rate that a single same-type probe-positive neighbour gives at K = 100.
-Input: cohort object. Output: <work>/results/imputation/neighbourhood_size.csv, neighbourhood_distance.csv"""
+hematopoietic cells belong to the clone, donor-derived cells do not). Also reports the distance to the 100th neighbor and the
+local probe-positive rate that a single same-type probe-positive neighbor gives at K = 100.
+Input: cohort object. Output: <work>/results/imputation/neighborhood_size.csv, neighborhood_distance.csv"""
 import numpy as np
 import pandas as pd
 
@@ -28,12 +28,12 @@ probe = obs.is_probe.to_numpy()
 
 rows = []
 for k in KS:
-    same, prb, kth = cz.neighbour_counts(obs, k, return_kth_distance=True)
+    same, prb, kth = cz.neighbor_counts(obs, k, return_kth_distance=True)
     label, _, _ = cz.clone_zone(obs, bg_rate, same, prb, k)
     imp = label & ~probe
     rows.append({"k": k, "n_clone_zone": int(label.sum()),
                  "host_cells": int(host.sum()), "donor_cells": int(donor.sum()),
-                 "host_labelled_frac": float(label[host].mean()), "donor_labelled_frac": float(label[donor].mean()),
+                 "host_labeled_frac": float(label[host].mean()), "donor_labeled_frac": float(label[donor].mean()),
                  "imputed_host_share": float(host[imp & called].mean())})
     if k == cz.K:
         elig = jak2 & obs.is_nlh.to_numpy() & obs.resolved.to_numpy()
@@ -41,8 +41,8 @@ for k in KS:
                            "median_um": float(np.nanmedian(kth[m])), "q25_um": float(np.nanpercentile(kth[m], 25)),
                            "q75_um": float(np.nanpercentile(kth[m], 75)), "frac_within_120um": float(np.nanmean(kth[m] <= 120))}
                           for name, m in (("all cells", np.ones(len(obs), bool)), ("eligible cells, JAK2 patients", elig))])
-        d["one_probe_neighbour_rate"] = 1 / cz.K
+        d["one_probe_neighbor_rate"] = 1 / cz.K
         d["max_background_x3"] = cz.X_BG * float(bg.bg_rate_used.max())
-        d.to_csv(OUT / "neighbourhood_distance.csv", index=False)
-pd.DataFrame(rows).to_csv(OUT / "neighbourhood_size.csv", index=False)
+        d.to_csv(OUT / "neighborhood_distance.csv", index=False)
+pd.DataFrame(rows).to_csv(OUT / "neighborhood_size.csv", index=False)
 print(pd.DataFrame(rows).to_string(index=False))

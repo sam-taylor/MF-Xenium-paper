@@ -3,8 +3,8 @@
 Clusters and labels are stored in the cohort object (`obsm["X_umap"]`, `obsm["X_umap_tnk"]`, `ct_*_final`,
 `is_ct_final_resolved`); later steps read them from there.
 
-1. 465 features: the 461 panel genes measured in every section, three HLA allele-specific probes and an ORAI2 exon-junction probe; mutation-allele and wild-type locus probes, negative controls and protein channels are left out. Log-normalised; PCA (200 components, 82.8% of the variance), Harmony on section, cosine
-   15-nearest-neighbour graph, Leiden (resolution 1.0).
+1. 465 features: the 461 panel genes measured in every section, three HLA allele-specific probes and an ORAI2 exon-junction probe; mutation-allele and wild-type locus probes, negative controls and protein channels are left out. Log-normalized; PCA (200 components, 82.8% of the variance), Harmony on section, cosine
+   15-nearest-neighbor graph, Leiden (resolution 1.0).
 2. Batch-restricted islands and small artifact clusters are removed (`02_counts_qv/artifact_cells.csv`); graph,
    UMAP (`min_dist` 0.1, `spread` 1.5) and Leiden are recomputed.
 3. Cell types per cluster from Wilcoxon marker genes (`sc.tl.rank_genes_groups`). The early myeloid-progenitor

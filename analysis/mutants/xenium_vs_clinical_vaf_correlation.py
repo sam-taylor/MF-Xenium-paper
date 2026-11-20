@@ -1,5 +1,5 @@
 """
-Fig. 2f, ED2h, ED2i: Xenium JAK2 V617F VAF vs. clinical NGS (MSK IMPACT) VAF — correlation + probe
+Fig. 2f, ED2h, ED2i: Xenium JAK2 V617F VAF vs. clinical NGS (MSK IMPACT) VAF: correlation, and probe
 true-positive / false-discovery (ROC/FDR) analysis.
 
 Xenium VAF = JAK2_ALT_probe_count / (JAK2_ALT_probe_count + JAK2_WT_probe_count),
@@ -18,8 +18,8 @@ from matplotlib.lines import Line2D
 from scipy import stats
 from pathlib import Path
 
-# ── Global aesthetics ──────────────────────────────────────────────────────────
-# pdf.fonttype=42 → TrueType fonts embedded in PDF (text remains editable in Illustrator)
+# Global aesthetics
+# pdf.fonttype=42 embeds TrueType fonts in the PDF (text stays editable in Illustrator)
 matplotlib.rcParams["pdf.fonttype"] = 42
 matplotlib.rcParams["ps.fonttype"]  = 42
 matplotlib.rcParams["font.family"]  = "Arial"
@@ -29,7 +29,7 @@ from mfx import paths
 
 OUT_DIR = paths.results("vaf")
 
-# ── Hard-coded data ────────────────────────────────────────────────────────────
+# Hard-coded data
 # (sample_id, xenium_jak2_vaf, clinical_ngs_vaf, group)
 # xenium_vaf = JAK2_ALT_raw / (JAK2_ALT_raw + JAK2_WT_raw)
 # clinical_vaf = JAK2 V617F VAF from MSK IMPACT / clinical NGS
@@ -43,9 +43,9 @@ DATA_MF8 = [
     ("MF8-T5",  0.633157,  0.070,  "Relapse"),
 ]
 
-# ── Main cohort (MF8 excluded from regression)
+# Main cohort (MF8 excluded from regression)
 DATA = [
-    # ── Transplant cohort ──────────────────────────────────────────────────
+    # Transplant cohort
     # MF1  (JAK2 V617F + EZH2 N673K + NF1 L1064P + NUP98 P649R)
     ("MF1-T1",   0.607843,  0.949,  "Pre-Tx"),
     ("MF1-T2",   0.058824,  0.000,  "Remission"),
@@ -90,7 +90,7 @@ DATA = [
     # MF16 (JAK2 V617F)
     ("MF16-T1",  0.680751,  0.948,  "Pre-Tx"),
     ("MF16-T2",  0.012295,  0.0021, "Relapse"),
-    # ── MFUT (untreated MPN controls) ─────────────────────────────────────
+    # MFUT (untreated MPN controls)
     ("MFUT-1",   0.483090,  0.555,  "MFUT"),   # JAK2 55.5%, SRSF2 P95H
     ("MFUT-2",   0.737085,  0.695,  "MFUT"),   # JAK2 69.5%, IDH2 R140Q 50%
     ("MFUT-3",   0.643145,  0.540,  "MFUT"),   # JAK2 54.0%
@@ -101,7 +101,7 @@ DATA = [
     ("MFUT-8",   0.395783,  0.588,  "MFUT"),   # JAK2 58.8%, CEBPA, DNMT3A R882H, TP53 M246V
     ("MFUT-9",   0.522471,  0.480,  "MFUT"),   # JAK2 48.0%, NRAS G12R, TET2 Q1034*
     ("MFUT-10",  0.336516,  0.310,  "MFUT"),   # JAK2 31.0% (PB), Chr20q-, BCORL1 del
-    # ── CTMS (JAKi-treated MPN) ───────────────────────────────────────────
+    # CTMS (JAKi-treated MPN)
     ("CTMS4-T1", 0.538350,  0.918,  "CTMS"),   # JAK2 91.8% (pre-trial), ARID2
     ("CTMS7-T2", 0.584362,  0.848,  "CTMS"),   # JAK2 84.8%
     ("CTMS8-T3", 0.502195,  0.739,  "CTMS"),   # JAK2 73.9% (pre-trial), MCL1, NXF1
@@ -109,7 +109,7 @@ DATA = [
     ("CTMS-11",  0.679216,  0.772,  "CTMS"),   # JAK2 77.2%
 ]
 
-# ── Group styling ──────────────────────────────────────────────────────────────
+# Group styling
 GROUP_ORDER  = ["MFUT", "Pre-Tx", "Remission", "Relapse", "CTMS"]
 GROUP_LABELS = {
     "MFUT":      "Untreated",
@@ -133,7 +133,7 @@ GROUP_MARKERS = {
     "CTMS":      "P",
 }
 
-# ── Unpack main cohort ─────────────────────────────────────────────────────────
+# Unpack main cohort
 sample_ids    = [d[0] for d in DATA]
 xenium_vafs   = np.array([d[1] for d in DATA])
 clinical_vafs = np.array([d[2] for d in DATA])
@@ -142,7 +142,7 @@ groups        = [d[3] for d in DATA]
 mf8_xen  = np.array([d[1] for d in DATA_MF8])
 mf8_clin = np.array([d[2] for d in DATA_MF8])
 
-# ── Linear regression (main cohort only, MF8 excluded) ────────────────────────
+# Linear regression (main cohort only, MF8 excluded)
 slope, intercept, r_value, p_value, _ = stats.linregress(clinical_vafs, xenium_vafs)
 r2 = r_value ** 2
 
@@ -159,9 +159,7 @@ pd.DataFrame([{"n": len(DATA), "r2": r2, "slope": slope, "intercept": intercept,
                "mixed_slope": mixed.params["clinical"], "mixed_p": mixed.pvalues["clinical"]}]
              ).to_csv(OUT_DIR / "fig2f_regression.csv", index=False)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Panel f — Xenium vs. clinical NGS JAK2 V617F VAF correlation (MF8 excluded)
-# ─────────────────────────────────────────────────────────────────────────────
+# Fig. 2f: Xenium vs. clinical NGS JAK2 V617F VAF correlation (MF8 excluded)
 fig, ax = plt.subplots(figsize=(6, 6))
 
 for sid, xv, cv, grp in zip(sample_ids, xenium_vafs, clinical_vafs, groups):
@@ -200,14 +198,12 @@ plt.tight_layout(pad=0.4)
 fig.savefig(OUT_DIR / "xenium_vs_clinical_vaf_correlation.pdf", dpi=300, bbox_inches="tight")
 fig.savefig(OUT_DIR / "xenium_vs_clinical_vaf_correlation.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"Saved correlation plot (panel f) → {OUT_DIR}")
+print(f"Saved Fig. 2f to {OUT_DIR}")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Panels d/e — ROC and FDR analysis of the JAK2 ALT probe (all samples, incl. MF8)
+# ED2h, ED2i: ROC and FDR analysis of the JAK2 ALT probe (all samples, incl. MF8)
 #
 # Ground-truth positive (JAK2+): clinical_vaf > 0 (JAK2 V617F confirmed)
 # Ground-truth negative (JAK2-): clinical_vaf == 0 (remission / non-JAK2 patient)
-# ─────────────────────────────────────────────────────────────────────────────
 all_xen  = np.concatenate([xenium_vafs, mf8_xen])
 all_clin = np.concatenate([clinical_vafs, mf8_clin])
 
@@ -229,7 +225,7 @@ tpr = np.array(tpr_list)
 fpr = np.array(fpr_list)
 fdr = np.array(fdr_list)
 
-auc = float(np.trapezoid(tpr, fpr) * -1)  # descending fpr order → negate
+auc = float(np.trapezoid(tpr, fpr) * -1)  # fpr is in descending order, so negate
 
 j_scores = tpr - fpr
 opt_idx  = np.argmax(j_scores)
@@ -299,4 +295,4 @@ plt.tight_layout(pad=0.4)
 fig3.savefig(OUT_DIR / "jak2_probe_tp_fp_analysis.pdf", dpi=300, bbox_inches="tight")
 fig3.savefig(OUT_DIR / "jak2_probe_tp_fp_analysis.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"Saved ROC/FDR plot (panels d/e) → {OUT_DIR}")
+print(f"Saved ED2h, ED2i to {OUT_DIR}")

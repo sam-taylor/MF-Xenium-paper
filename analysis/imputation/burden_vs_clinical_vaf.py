@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Probe-positive and clone-zone fractions of haematopoietic cells per section beside the clinical JAK2 V617F VAF (ED6a).
+"""Probe-positive and clone-zone fractions of hematopoietic cells per section beside the clinical JAK2 V617F VAF (ED6a).
 Input: cohort object; clinical VAFs and groups of Fig. 2f (analysis/mutants/xenium_vs_clinical_vaf_correlation.py), replaced by the
 VAF measured on the FFPE biopsy itself where the cohort object has one (jak2_v617f_vaf_ffpe).
 Output: <work>/results/imputation/burden_vs_clinical_vaf.csv, burden_vs_clinical_vaf_summary.csv"""
