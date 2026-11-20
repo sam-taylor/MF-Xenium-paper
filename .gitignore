@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+work/
+config/paths.local.yaml
+.ipynb_checkpoints/
+logs/
+config/paths.*.yaml

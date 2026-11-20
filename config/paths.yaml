@@ -1,0 +1,6 @@
+# Data locations. Every script resolves its inputs and outputs through mfx.paths.
+# Copy this file to config/paths.local.yaml (ignored by git) and edit, or point MFX_CONFIG at a file.
+work: /path/to/work                              # intermediates and results
+cohort_object: /path/to/work/cohort.zarr         # the cohort AnnData (zarr), built by pipeline/
+sections_csv: /path/to/sections.csv                # per section: xenium_id, sample_id, transcripts, proseg_metadata
+protein_dir: /path/to/protein_mfi                  # per-section intensity tables from pipeline/05
